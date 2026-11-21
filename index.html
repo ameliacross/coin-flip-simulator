@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coin Flip Simulator</title>
+<style>
+body{font-family:Arial;background:#fefce8;padding:25px;text-align:center}
+main{max-width:500px;margin:40px auto;background:white;padding:30px;border-radius:18px}
+#coin{width:150px;height:150px;margin:25px auto;background:#facc15;border:8px solid #eab308;border-radius:50%;display:grid;place-items:center;font-size:25px;font-weight:bold;color:#713f12}
+button{background:#a16207;color:white;padding:13px 20px;border:0;border-radius:8px;margin:5px;cursor:pointer}
+.stats{background:#fef9c3;padding:20px;border-radius:10px;margin-top:20px;line-height:2}
+</style>
+</head>
+<body>
+<main>
+<h1>Coin Flip Simulator</h1>
+<p>Flip a virtual coin and track the results.</p>
+<div id="coin">FLIP</div>
+<button onclick="flip()">Flip Coin</button>
+<button onclick="reset()">Reset</button>
+<div class="stats">
+Heads: <span id="heads">0</span><br>
+Tails: <span id="tails">0</span><br>
+Total Flips: <span id="total">0</span>
+</div>
+</main>
+<script>
+let heads=0,tails=0;
+function render(){
+ document.getElementById("heads").textContent=heads;
+ document.getElementById("tails").textContent=tails;
+ document.getElementById("total").textContent=heads+tails;
+}
+function flip(){
+ const result=Math.random()<0.5?"HEADS":"TAILS";
+ if(result==="HEADS")heads++;
+ else tails++;
+ document.getElementById("coin").textContent=result;
+ render();
+}
+function reset(){
+ heads=tails=0;
+ document.getElementById("coin").textContent="FLIP";
+ render();
+}
+</script>
+</body>
+</html>
