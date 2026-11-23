@@ -2,48 +2,58 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Coin Flip Simulator</title>
 <style>
-body{font-family:Arial;background:#fefce8;padding:25px;text-align:center}
-main{max-width:500px;margin:40px auto;background:white;padding:30px;border-radius:18px}
-#coin{width:150px;height:150px;margin:25px auto;background:#facc15;border:8px solid #eab308;border-radius:50%;display:grid;place-items:center;font-size:25px;font-weight:bold;color:#713f12}
-button{background:#a16207;color:white;padding:13px 20px;border:0;border-radius:8px;margin:5px;cursor:pointer}
-.stats{background:#fef9c3;padding:20px;border-radius:10px;margin-top:20px;line-height:2}
+body{font-family:Arial;background:#fefce8;text-align:center;padding:30px}
+main{max-width:500px;margin:auto;background:white;padding:25px;border-radius:16px}
+#coin{font-size:75px;margin:25px}
+button{background:#ca8a04;color:white;border:0;padding:12px 20px;border-radius:8px;cursor:pointer}
+#history{list-style:none;padding:0}
+#history li{padding:8px;background:#fef9c3;margin:6px;border-radius:6px}
 </style>
 </head>
 <body>
 <main>
 <h1>Coin Flip Simulator</h1>
-<p>Flip a virtual coin and track the results.</p>
-<div id="coin">FLIP</div>
+<div id="coin">🪙</div>
+<h2 id="result">Ready to flip?</h2>
 <button onclick="flip()">Flip Coin</button>
-<button onclick="reset()">Reset</button>
-<div class="stats">
-Heads: <span id="heads">0</span><br>
-Tails: <span id="tails">0</span><br>
-Total Flips: <span id="total">0</span>
-</div>
+<button onclick="resetHistory()">Reset History</button>
+<h3>Flip Statistics</h3>
+<p id="stats">Heads: 0 | Tails: 0</p>
+<h3>Recent Results</h3>
+<ul id="history"></ul>
 </main>
 <script>
-let heads=0,tails=0;
-function render(){
- document.getElementById("heads").textContent=heads;
- document.getElementById("tails").textContent=tails;
- document.getElementById("total").textContent=heads+tails;
-}
+let history=[];
 function flip(){
- const result=Math.random()<0.5?"HEADS":"TAILS";
- if(result==="HEADS")heads++;
- else tails++;
- document.getElementById("coin").textContent=result;
+ const result=Math.random()<0.5?"Heads":"Tails";
+ history.unshift(result);
+ document.getElementById("coin").textContent=result==="Heads"?"🟡":"⚪";
+ document.getElementById("result").textContent=result;
  render();
 }
-function reset(){
- heads=tails=0;
- document.getElementById("coin").textContent="FLIP";
+function render(){
+ const heads=history.filter(x=>x==="Heads").length;
+ const tails=history.length-heads;
+ document.getElementById("stats").textContent=
+ "Heads: "+heads+" | Tails: "+tails+" | Total: "+history.length;
+ const list=document.getElementById("history");
+ list.innerHTML="";
+ history.slice(0,10).forEach((x,i)=>{
+  const li=document.createElement("li");
+  li.textContent="Flip "+(history.length-i)+": "+x;
+  list.appendChild(li);
+ });
+}
+function resetHistory(){
+ history=[];
+ document.getElementById("result").textContent="Ready to flip?";
+ document.getElementById("coin").textContent="🪙";
  render();
 }
+render();
 </script>
 </body>
 </html>
